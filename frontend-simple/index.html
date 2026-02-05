@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Performance Prediction</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="bg"></div>
+
+    <div class="container">
+      <header class="header">
+        <h1>Student Performance Prediction System</h1>
+        <p class="sub">Enter student scores and get Pass/Fail instantly</p>
+      </header>
+
+      <main class="grid">
+        <!-- Input Card -->
+        <section class="card">
+          <h2>Enter Student Scores</h2>
+
+          <form id="predictForm" class="form">
+            <label>
+              Attendance (%)
+              <input
+                type="number"
+                id="attendance"
+                min="0"
+                max="100"
+                placeholder="0 - 100"
+                required
+              />
+            </label>
+
+            <label>
+              Assignment Marks
+              <input
+                type="number"
+                id="assignment"
+                min="0"
+                max="100"
+                placeholder="0 - 100"
+                required
+              />
+            </label>
+
+            <label>
+              Quiz Marks
+              <input
+                type="number"
+                id="quiz"
+                min="0"
+                max="100"
+                placeholder="0 - 100"
+                required
+              />
+            </label>
+
+            <label>
+              Exam Marks
+              <input
+                type="number"
+                id="exam"
+                min="0"
+                max="100"
+                placeholder="0 - 100"
+                required
+              />
+            </label>
+
+            <div class="actions">
+              <button type="submit" class="btn primary" id="btnPredict">
+                Predict Result
+              </button>
+              <button type="button" class="btn" id="btnReset">Reset</button>
+            </div>
+
+            <p class="hint">
+              Tip: Use values 0–100. Click Predict to see result.
+            </p>
+          </form>
+        </section>
+
+        <!-- Result Card -->
+        <section class="card">
+          <h2>Prediction Result</h2>
+
+          <div id="stateEmpty" class="state">
+            <div class="pulseDot"></div>
+            <p>No prediction yet. Fill the form and click Predict.</p>
+          </div>
+
+          <div id="stateLoading" class="state hidden">
+            <div class="spinner"></div>
+            <p>Predicting…</p>
+          </div>
+
+          <div id="stateResult" class="state hidden">
+            <div id="badge" class="badge">PASS</div>
+
+            <div class="confidence">
+              <div class="row">
+                <span>Confidence</span>
+                <strong id="confidenceText">0%</strong>
+              </div>
+              <div class="bar">
+                <div id="confidenceBar" class="fill"></div>
+              </div>
+            </div>
+
+            <div class="summary">
+              <h3>Input Summary</h3>
+              <ul>
+                <li>Attendance: <strong id="sAttendance">-</strong></li>
+                <li>Assignment: <strong id="sAssignment">-</strong></li>
+                <li>Quiz: <strong id="sQuiz">-</strong></li>
+                <li>Exam: <strong id="sExam">-</strong></li>
+              </ul>
+            </div>
+          </div>
+
+          <p class="note">Backend: FastAPI + Decision Tree</p>
+        </section>
+      </main>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
