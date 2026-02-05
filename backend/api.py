@@ -10,8 +10,12 @@ app = FastAPI(title="Student Performance Prediction API")
 # allow frontend to call backend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # for dev only
-    allow_credentials=True,
+    allow_origins=[
+        "https://ravenisempty.github.io",   # GitHub Pages
+        "http://localhost:5500",
+        "http://127.0.0.1:5500",
+    ],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
