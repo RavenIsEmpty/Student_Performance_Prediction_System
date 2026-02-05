@@ -52,11 +52,12 @@ def train_and_save_model() -> dict:
     return {"accuracy": acc, "model_path": MODEL_PATH}
 
 
-def load_model() -> dict:
-    """Load model.joblib. If missing, train it."""
-    if not os.path.exists(MODEL_PATH):
-        train_and_save_model()
-    return joblib.load(MODEL_PATH)
+def load_model():
+    payload = joblib.load(MODEL_PATH)
+    # Backward compatible: if old joblib was just a model, wrap it
+    if not isinstance(payload, dict) or "model" not in payload:
+        payload = {"model": payload}
+    return payload
 
 
 def predict(attendance: float, assignment: float, quiz: float, exam: float) -> dict:
