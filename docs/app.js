@@ -1,4 +1,5 @@
-const API_URL = "http://127.0.0.1:8000/predict";
+const API_URL =
+  "https://student-performance-prediction-system-y5pm.onrender.com/predict";
 
 const form = document.getElementById("predictForm");
 const btnReset = document.getElementById("btnReset");
@@ -72,7 +73,7 @@ form.addEventListener("submit", async (e) => {
     showState(stateResult);
   } catch (err) {
     console.error(err);
-    alert("Prediction failed. Make sure backend is running on port 8000.");
+    alert(`Prediction failed: ${err?.message || err}`);
     showState(stateEmpty);
   }
 });
