@@ -17,6 +17,20 @@ const sAssignment = document.getElementById("sAssignment");
 const sQuiz = document.getElementById("sQuiz");
 const sExam = document.getElementById("sExam");
 
+const reasonText = document.getElementById("reasonText");
+const scoreText = document.getElementById("scoreText");
+
+// School policy (must match backend policy)
+const ATTENDANCE_GATE = 70;
+const W_ASSIGNMENT = 0.2;
+const W_QUIZ = 0.2;
+const W_EXAM = 0.6;
+const PASS_SCORE = 50;
+
+function calcWeightedScore(assignment, quiz, exam) {
+  return W_ASSIGNMENT * assignment + W_QUIZ * quiz + W_EXAM * exam;
+}
+
 function showState(which) {
   stateEmpty.classList.add("hidden");
   stateLoading.classList.add("hidden");
@@ -35,6 +49,13 @@ function setBadge(outcome) {
   }
 }
 
+function clearExplainText() {
+  reasonText.textContent = "";
+  scoreText.textContent = "";
+  reasonText.classList.add("hidden");
+  scoreText.classList.add("hidden");
+}
+
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -43,7 +64,11 @@ form.addEventListener("submit", async (e) => {
   const quiz = Number(document.getElementById("quiz").value);
   const exam = Number(document.getElementById("exam").value);
 
-  // show loading
+  const isGateFail = attendance < ATTENDANCE_GATE;
+  const weighted = calcWeightedScore(assignment, quiz, exam);
+
+  // show loading + clear previous message
+  clearExplainText();
   showState(stateLoading);
 
   try {
@@ -64,6 +89,18 @@ form.addEventListener("submit", async (e) => {
     confidenceText.textContent = `${data.confidence}%`;
     confidenceBar.style.width = `${data.confidence}%`;
 
+    // Explain decision
+    if (isGateFail) {
+      reasonText.textContent = `Reason: Attendance below ${ATTENDANCE_GATE}% → automatic FAIL (school policy).`;
+      reasonText.classList.remove("hidden");
+    } else {
+      scoreText.textContent = `Weighted score = 0.2×Assignment + 0.2×Quiz + 0.6×Exam = ${weighted.toFixed(
+        1,
+      )}. Pass threshold ≥ ${PASS_SCORE}.`;
+      scoreText.classList.remove("hidden");
+    }
+
+    // Input summary
     sAttendance.textContent = attendance;
     sAssignment.textContent = assignment;
     sQuiz.textContent = quiz;
@@ -82,5 +119,6 @@ btnReset.addEventListener("click", () => {
   form.reset();
   confidenceBar.style.width = "0%";
   confidenceText.textContent = "0%";
+  clearExplainText();
   showState(stateEmpty);
 });
