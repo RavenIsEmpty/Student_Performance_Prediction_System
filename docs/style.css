@@ -52,6 +52,7 @@ body {
   margin: 0 0 8px;
   font-size: clamp(24px, 3vw, 34px);
   letter-spacing: 0.2px;
+  text-shadow: 0 12px 34px rgba(0, 0, 0, 0.45);
 }
 .sub {
   margin: 0;
@@ -77,6 +78,15 @@ body {
   box-shadow: var(--shadow);
   backdrop-filter: blur(10px);
   animation: fadeUp 0.7s ease both;
+
+  /* reduce “empty space” feel by letting note sit naturally */
+  display: flex;
+  flex-direction: column;
+}
+
+/* IMPORTANT: remove the overlay glow that makes the vertical stripe */
+.card::before {
+  content: none !important;
 }
 
 .card h2 {
@@ -87,25 +97,6 @@ body {
 .form {
   display: grid;
   gap: 12px;
-}
-
-.reason,
-.score {
-  margin: 0px 0 12px;
-  padding: 10px 12px;
-  border-radius: 12px;
-  border: 1px dashed rgba(255, 255, 255, 0.18);
-  color: rgba(233, 236, 245, 0.78);
-  font-size: 12.5px;
-  line-height: 1.35;
-}
-
-.reason {
-  background: rgba(239, 68, 68, 0.08);
-}
-
-.score {
-  background: rgba(0, 212, 255, 0.06);
 }
 
 label {
@@ -126,10 +117,23 @@ input {
     transform 0.08s ease,
     border 0.18s ease,
     box-shadow 0.18s ease;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+input:hover {
+  border-color: rgba(255, 255, 255, 0.26);
 }
 input:focus {
   border-color: rgba(90, 75, 255, 0.7);
   box-shadow: 0 0 0 4px rgba(90, 75, 255, 0.16);
+}
+
+/* Stop browser autofill from turning inputs white */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--text);
+  -webkit-box-shadow: 0 0 0px 1000px rgba(20, 24, 45, 0.55) inset !important;
+  transition: background-color 9999s ease-in-out 0s;
 }
 
 .actions {
@@ -161,6 +165,20 @@ input:focus {
 .primary {
   background: linear-gradient(135deg, #5a4bff, #00d4ff);
   border: none;
+  position: relative;
+  overflow: hidden;
+}
+.primary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    240px 60px at 30% 0%,
+    rgba(255, 255, 255, 0.22),
+    transparent 60%
+  );
+  opacity: 0.7;
+  pointer-events: none;
 }
 .primary:hover {
   box-shadow: 0 14px 34px rgba(90, 75, 255, 0.26);
@@ -208,28 +226,84 @@ input:focus {
   animation: spin 0.8s linear infinite;
 }
 
+/* ---------- NEW: Premium PASS/FAIL pill ---------- */
 .badge {
   display: inline-flex;
-  padding: 10px 14px;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
   border-radius: 999px;
-  font-weight: 700;
-  letter-spacing: 0.4px;
-  margin-bottom: 14px;
-  animation: pop 0.28s ease both;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  font-size: 14px;
+  margin: 0;
+  box-shadow:
+    0 14px 40px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(6px);
+  animation: pop 0.22s ease both;
 }
 .badge.pass {
-  background: rgba(34, 197, 94, 0.16);
-  border: 1px solid rgba(34, 197, 94, 0.35);
-  color: #4ade80;
+  background: linear-gradient(
+    135deg,
+    rgba(34, 197, 94, 0.22),
+    rgba(0, 212, 255, 0.1)
+  );
+  border: 1px solid rgba(34, 197, 94, 0.38);
+  color: #68f0a2;
 }
 .badge.fail {
-  background: rgba(239, 68, 68, 0.14);
-  border: 1px solid rgba(239, 68, 68, 0.35);
-  color: #fb7185;
+  background: linear-gradient(
+    135deg,
+    rgba(239, 68, 68, 0.22),
+    rgba(90, 75, 255, 0.1)
+  );
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #ff8aa0;
+}
+
+/* Reason / Score cards look cleaner (no dashed border) */
+.reason,
+.score {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(233, 236, 245, 0.78);
+  font-size: 12.5px;
+  line-height: 1.35;
+}
+.reason {
+  background: rgba(239, 68, 68, 0.08);
+}
+.score {
+  background: rgba(0, 212, 255, 0.06);
+}
+
+/* Result block (compact and readable) */
+.resultHero {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  padding: 14px; /* tighter */
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(10, 14, 30, 0.22);
+}
+@media (min-width: 520px) {
+  .resultHero {
+    grid-template-columns: 0.95fr 1.05fr;
+    align-items: start;
+  }
+}
+.resultHero .left {
+  display: grid;
+  gap: 10px;
 }
 
 .confidence {
-  margin: 6px 0 14px;
+  margin: 6px 0 10px; /* tighter */
 }
 .row {
   display: flex;
@@ -252,6 +326,11 @@ input:focus {
   transition: width 0.6s ease;
 }
 
+/* Shimmer OFF (cleaner for presentation) */
+.fill::after {
+  display: none;
+}
+
 .summary h3 {
   margin: 0 0 8px;
   font-size: 14px;
@@ -264,12 +343,25 @@ input:focus {
   font-size: 13px;
 }
 
-.note {
-  margin-top: 14px;
-  font-size: 12px;
-  color: rgba(233, 236, 245, 0.55);
+/* Mini summary tighter */
+.summary.mini ul {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 4px;
+}
+.summary.mini li strong {
+  color: rgba(233, 236, 245, 0.92);
 }
 
+.note {
+  margin-top: 12px;
+  font-size: 12px;
+  color: rgba(233, 236, 245, 0.55);
+  opacity: 0.75;
+}
+
+/* Animations */
 @keyframes spin {
   to {
     transform: rotate(360deg);
@@ -305,156 +397,4 @@ input:focus {
     transform: scale(1);
     opacity: 1;
   }
-}
-
-/* ---------- Gen-Z modern polish ---------- */
-:root {
-  --glowA: rgba(90, 75, 255, 0.35);
-  --glowB: rgba(0, 212, 255, 0.28);
-}
-
-.header h1 {
-  text-shadow: 0 12px 34px rgba(0, 0, 0, 0.45);
-}
-
-.card {
-  position: relative;
-  overflow: hidden;
-}
-
-/* subtle moving shine */
-.card::before {
-  content: "";
-  position: absolute;
-  inset: -2px;
-  background:
-    radial-gradient(900px 320px at 20% 0%, var(--glowA), transparent 55%),
-    radial-gradient(700px 280px at 90% 30%, var(--glowB), transparent 60%);
-  opacity: 0.18;
-  pointer-events: none;
-  transform: translateY(-6px);
-}
-
-.card:hover {
-  transform: translateY(-2px);
-  transition: transform 0.25s ease;
-}
-
-/* Make "state" content cleaner for presentation */
-.stateResult {
-  align-items: stretch;
-}
-
-/* Result hero layout */
-.resultHero {
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 14px;
-  padding: 16px;
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(10, 14, 30, 0.22);
-}
-@media (min-width: 520px) {
-  .resultHero {
-    grid-template-columns: 0.95fr 1.05fr;
-    align-items: start;
-  }
-}
-
-.resultHero .left {
-  display: grid;
-  gap: 10px;
-}
-
-/* Better spacing for reason/score (remove negative margin) */
-.reason,
-.score {
-  margin: 0 0 0;
-}
-
-/* Make badge more "hero" */
-.badge {
-  font-size: 14px;
-  padding: 12px 16px;
-  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.28);
-}
-
-/* Confidence bar feels more alive */
-.fill {
-  position: relative;
-}
-.fill::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.25),
-    transparent
-  );
-  transform: translateX(-100%);
-  animation: shimmer 1.8s ease infinite;
-  opacity: 0.55;
-}
-
-/* Mini summary tighter + cleaner */
-.summary.mini ul {
-  margin: 0;
-  padding-left: 18px;
-  display: grid;
-  gap: 4px;
-}
-
-.summary.mini li strong {
-  color: rgba(233, 236, 245, 0.92);
-}
-
-/* Make inputs more "Gen-Z" */
-input {
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
-}
-input:hover {
-  border-color: rgba(255, 255, 255, 0.26);
-}
-
-/* Primary button pop */
-.primary {
-  position: relative;
-  overflow: hidden;
-}
-.primary::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    240px 60px at 30% 0%,
-    rgba(255, 255, 255, 0.22),
-    transparent 60%
-  );
-  opacity: 0.7;
-  pointer-events: none;
-}
-
-@keyframes shimmer {
-  0% {
-    transform: translateX(-120%);
-  }
-  60% {
-    transform: translateX(120%);
-  }
-  100% {
-    transform: translateX(120%);
-  }
-}
-
-/* Stop browser autofill from turning inputs white */
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus {
-  -webkit-text-fill-color: var(--text);
-  -webkit-box-shadow: 0 0 0px 1000px rgba(20, 24, 45, 0.55) inset !important;
-  transition: background-color 9999s ease-in-out 0s;
 }
