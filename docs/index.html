@@ -96,29 +96,35 @@
             <p>Predicting…</p>
           </div>
 
-          <div id="stateResult" class="state hidden">
+
+          <div id="stateResult" class="state hidden stateResult">
+            <div class="resultHero">
+            <div class="left">
             <div id="badge" class="badge">PASS</div>
             <p id="reasonText" class="reason hidden"></p>
             <p id="scoreText" class="score hidden"></p>
+          </div>
 
-            <div class="confidence">
-              <div class="row">
-                <span>Confidence</span>
-                <strong id="confidenceText">0%</strong>
-              </div>
-              <div class="bar">
-                <div id="confidenceBar" class="fill"></div>
-              </div>
-            </div>
+          <div class="right">
+          <div class="confidence">
+            <div class="row">
+              <span>Confidence</span>
+              <strong id="confidenceText">0%</strong>
+          </div>
+          <div class="bar">
+            <div id="confidenceBar" class="fill"></div>
+          </div>
+        </div>
 
-            <div class="summary">
-              <h3>Input Summary</h3>
-              <ul>
-                <li>Attendance: <strong id="sAttendance">-</strong></li>
-                <li>Assignment: <strong id="sAssignment">-</strong></li>
-                <li>Quiz: <strong id="sQuiz">-</strong></li>
-                <li>Exam: <strong id="sExam">-</strong></li>
-              </ul>
+          <div class="summary mini">
+            <h3>Input Summary</h3>
+                <ul>
+                  <li>Attendance: <strong id="sAttendance">-</strong></li>
+                  <li>Assignment: <strong id="sAssignment">-</strong></li>
+                  <li>Quiz: <strong id="sQuiz">-</strong></li>
+                  <li>Exam: <strong id="sExam">-</strong></li>
+                </ul>
+              </div>
             </div>
           </div>
 

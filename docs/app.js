@@ -41,10 +41,10 @@ function showState(which) {
 function setBadge(outcome) {
   badge.classList.remove("pass", "fail");
   if (outcome === "PASS") {
-    badge.textContent = "PASS";
+    badge.textContent = "✅ PASS";
     badge.classList.add("pass");
   } else {
-    badge.textContent = "FAIL";
+    badge.textContent = "❌ FAIL";
     badge.classList.add("fail");
   }
 }
