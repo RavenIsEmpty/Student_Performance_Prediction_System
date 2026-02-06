@@ -181,6 +181,11 @@ input:focus {
   border: 1px dashed rgba(255, 255, 255, 0.18);
   color: var(--muted);
 }
+
+.stateResult {
+  margin-top: 10px;
+}
+
 .hidden {
   display: none;
 }
@@ -325,7 +330,7 @@ input:focus {
   background:
     radial-gradient(900px 320px at 20% 0%, var(--glowA), transparent 55%),
     radial-gradient(700px 280px at 90% 30%, var(--glowB), transparent 60%);
-  opacity: 0.35;
+  opacity: 0.18;
   pointer-events: none;
   transform: translateY(-6px);
 }
@@ -346,15 +351,14 @@ input:focus {
   display: grid;
   grid-template-columns: 1fr;
   gap: 14px;
-  padding: 14px;
+  padding: 16px;
   border-radius: 16px;
-  border: 1px dashed rgba(255, 255, 255, 0.16);
-  background: rgba(10, 14, 30, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(10, 14, 30, 0.22);
 }
-
 @media (min-width: 520px) {
   .resultHero {
-    grid-template-columns: 0.9fr 1.1fr;
+    grid-template-columns: 0.95fr 1.05fr;
     align-items: start;
   }
 }
@@ -444,4 +448,13 @@ input:hover {
   100% {
     transform: translateX(120%);
   }
+}
+
+/* Stop browser autofill from turning inputs white */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--text);
+  -webkit-box-shadow: 0 0 0px 1000px rgba(20, 24, 45, 0.55) inset !important;
+  transition: background-color 9999s ease-in-out 0s;
 }
